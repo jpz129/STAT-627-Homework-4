@@ -1,0 +1,144 @@
+---
+title: "Homework 4"
+author: "JP Zamanillo"
+date: "9/27/2020"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# 1.
+
+## a. 
+
+```{r}
+set.seed(1)
+x1 <- runif(100)
+x2 <- 0.5 * x1 + rnorm(100) / 10
+y <- 2 + 2 * x2 + rnorm(100)
+```
+
+$Y = 2 + 2X_1 + 0.3X_2 + \epsilon$
+
+## b.
+
+```{r}
+cor(x1, x2)
+```
+```{r}
+plot(x1, x2)
+```
+
+## c.
+
+```{r}
+lm.fit <- lm(y ~ x1 + x2)
+summary(lm.fit)
+```
+We can reject the null hypothesis that $\beta_2 = 0$ based on a p-value of 0.0188.  However, with this current model, we fail to reject the null hypothesis that $\beta_1 = 0$ based on a p-value of 0.4390.
+
+## d. 
+
+```{r}
+lm.fit.x1<- lm(y ~ x1)
+summary(lm.fit.x1)
+```
+We can reject the null hypothesis that $\beta_1 = 0$ based on a p-value of 0.0329 for a model that does not contain `x2`.
+
+## e. 
+
+```{r}
+lm.fit.x2 <- lm(y ~ x2)
+summary(lm.fit.x2)
+```
+In this model, we can reject the null hypothesis that $\beta_1 = 0$ based on a p-value of 0.00202.
+
+## f.
+
+No the results do not contradict each other because multicollinearity exists between `x1` and `x2`, making it difficult to distinguish their effects on `y`.
+
+## g.
+
+```{r}
+x1 <- c(x1, 0.1)
+x2 <- c(x2, 0.8)
+y <- c(y, 6)
+```
+
+```{r}
+cor(x1, x2)
+plot(x1, x2)
+```
+With the new observations, we see a lower correlation between `x1` and `x2`.  It also looks like there's a serious outlier towards the top-left of the plot above, which corresponds to our new value.
+
+```{r}
+lm.fit2 <- lm(y ~ x1 + x2)
+summary(lm.fit2)
+par(mfrow = c(2, 2))
+plot(lm.fit2)
+```
+Our full model now shows that we fail to reject that $\beta_1 = 0$ with a p-value of 0.0619.  We can still conclude that $\beta_2 \neq 0$ in this current model.  The leverage plot suggests that our 101st observation, or our new value, acts as a high leverage point, but it does not exceed the 2 outlier threshold in regards to the Studentized residuals.
+
+```{r}
+lm.fit3 <- lm(y ~ x1)
+summary(lm.fit3)
+par(mfrow = c(2, 2))
+plot(lm.fit3)
+```
+`x1` alone no longer appears to have a relationship with `y` based on a p-value of 0.122.  For this model, observation 101 acts as a both a serious outlier above a Studentized residual value of 2 and it also serves as a high leverage point according the leverage plot above.
+
+```{r}
+lm.fit4 <- lm(y ~ x2)
+summary(lm.fit4)
+par(mfrow = c(2, 2))
+plot(lm.fit4)
+```
+`x2` continues to show that a relationship exists with `y` based on a p-value of 0.00015.  Just like the previous `lm.fit3` model, observation 101 is both a high leverage point and outlier.
+
+For `lm.fit3`, the slope of `x1` is reduced compared to the previous iteration.  `lm.fit4` $beta_1$ estimate shows an increase of slope against `y`.  
+
+## h.
+
+Based on the outputs above:
+
+- `lm.fit2`: 1.06
+- `lm.fit3`: 1.14
+- `lm.fit4`: 1.073
+
+The full model, or `lm.fit2`, has the lowest standard error.  This means that this model produces the most reliable estimates despite the lack of significance of `x1`.  
+
+## i.
+
+```{r, message=FALSE}
+library(car)
+```
+
+```{r}
+vif(lm.fit)
+```
+
+```{r}
+vif(lm.fit2)
+```
+As we see from the VIF calculations, our model with the outlier has less multicollinearity than our model without the outlier.  Our model with the outlier performed better because the lower multicollinearity among the predictors enabled us to better identify `x1` and `x2`'s effects on `y`.
+
+Here's an example for the problem with multicollinearity.  Let's assume that we wanted to guess a person's height based on their forearm length and their calf length.  Let's also assume that both of these measurements are highly correlated.  If we measured someone knowing that these are correlated, then why would we measure both?  Instead, it would be better to choose another measurement that is not correlated with forearm length, such as neck length (this is just an example, I don't know if this is really the case, but it proves the point).  We will have more accuracy predicting height in this case if we choose to measure something that's not correlated because we'll have more unique features to base our predictions on.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
