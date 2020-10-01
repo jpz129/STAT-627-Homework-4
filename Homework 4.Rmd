@@ -126,7 +126,102 @@ As we see from the VIF calculations, our model with the outlier has less multico
 
 Here's an example for the problem with multicollinearity.  Let's assume that we wanted to guess a person's height based on their forearm length and their calf length.  Let's also assume that both of these measurements are highly correlated.  If we measured someone knowing that these are correlated, then why would we measure both?  Instead, it would be better to choose another measurement that is not correlated with forearm length, such as neck length (this is just an example, I don't know if this is really the case, but it proves the point).  We will have more accuracy predicting height in this case if we choose to measure something that's not correlated because we'll have more unique features to base our predictions on.
 
+# 3.
 
+## a.
+
+$p(X) = 0.37/1.37$
+
+```{r}
+0.37/1.37
+```
+
+## b.
+
+$p(X) = 0.16/0.84$
+
+```{r}
+0.16/0.84
+```
+
+# 4.
+
+$\beta_0$ = -6
+$\beta_1$ = 0.05
+$\beta_2$ = 1
+
+## a.
+
+$e^-0.05/(1 + e^-0.05)$
+```{r}
+exp(-0.5)/(1 + exp(-0.5))
+```
+
+## b.
+
+$(log(1) + 2.5)/0.05$
+```{r}
+(log(1) + 2.5)/0.05
+```
+# 5.
+
+## a.
+
+Distance formula:
+
+$d(p,q) = \sqrt{(q_1-p_1)^2 +\cdot\cdot\cdot + (q_n - p_n)^2}$
+
+Observation distances:
+
+1. 3
+
+2. 2
+
+3. 3.16
+
+4. 2.23
+
+5. 1.41
+
+6. 1.73
+
+## b.
+
+When $K=1$, we would predict green because the Euclidean distance to observation 5 is the lowest at 1.41.
+
+## c.
+
+When $K=3$, we predict red because we have 2 red observations (distance of 1.73 and 2) and 1 green observation (distance of 1.41) within our boundary.  The majority rule dictates that we predict red for our test observation.  
+
+## d.
+
+If the decision boundary is highly non-linear, then we would expect a $K$ that's lower to work better than a higher value for $K$ because a high value of K makes our model less-flexible.  A lower value for K allows the model to be more flexible, which is better in the event that our Bayes decision boundary is non-linear.
+
+# 6.
+
+## a.
+
+QDA will perform better on the training set in this situation because it's more flexible than LDA.  On the testing set, LDA will perform better because we reduce the chance of over-fitting our model.
+
+## b.
+
+QDA will work better on both the training set and the test set because it's a more flexible method than LDA.  
+
+## c.
+
+QDA will perform better as $n$ increases because QDA introduces higher variance to it's flexibility.  Higher variance is not a major concern when dealing with a larger set of data.  LDA might be too biased if the true Bayes decision boundary is not truly linear.
+
+## d.
+
+False.  LDA will better represent the true Bayes decision boundary and it will reduce our risk of overfitting.  QDA will likely overfit to our data due to its higher flexibility.  
+
+# 7.
+
+We can use the formula to obtain the posterior probability of x.
+
+$p_1(4) = \frac{0.8e^{-(1/72)(4-10)^2}}{0.8e^{-(1/72)(4-10)^2} + 0.2e^{-(1/72)(4-0)^2}} = 0.752$
+
+Given a return of 4, the probability that a company issues a dividend is 0.752.
 
 
 
